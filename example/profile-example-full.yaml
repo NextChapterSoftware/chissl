@@ -1,0 +1,19 @@
+fingerprint: "sample_fingerprint"
+auth: "user:password"
+keepalive: 30s
+max-retry-count: 10
+max-retry-interval: 2m
+server: "https://tunnel.example.com"
+proxy: "http://admin:password@my-server.com:8081"
+remotes:
+  - "8080:remote->80:localhost"
+# TODO: Default headers are not working at the moment
+#headers:
+#  Foo: ["Bar"]
+tls:
+  tls-skip-verify: true
+  tls-ca: "/path/to/ca"
+  tls-cert: "/path/to/cert"
+  tls-key: "/path/to/key"
+  hostname: "example.com"
+verbose: true

@@ -1,0 +1,9 @@
+auth: "username:password"
+keepalive: 30s
+max-retry-count: 10
+max-retry-interval: 25s
+server: "https://tunnel.example.com"
+remotes:
+  - "8089->80:neverssl.com"
+  - "8098->8000"
+verbose: true
