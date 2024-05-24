@@ -392,27 +392,27 @@ func client(args []string) {
 
 	config := &chclient.Config{Headers: http.Header{}}
 	profilePath := flags.String("profile", "", "")
-	flags.StringVar(&config.Fingerprint, "fingerprint", config.Fingerprint, "")
-	flags.StringVar(&config.Auth, "auth", config.Auth, "")
-	flags.DurationVar(&config.KeepAlive, "keepalive", config.KeepAlive, "")
-	flags.IntVar(&config.MaxRetryCount, "max-retry-count", config.MaxRetryCount, "")
-	flags.DurationVar(&config.MaxRetryInterval, "max-retry-interval", config.MaxRetryInterval, "")
-	flags.StringVar(&config.Proxy, "proxy", config.Proxy, "")
-	flags.StringVar(&config.TLS.CA, "tls-ca", config.TLS.CA, "")
-	flags.BoolVar(&config.TLS.SkipVerify, "tls-skip-verify", config.TLS.SkipVerify, "")
-	flags.StringVar(&config.TLS.Cert, "tls-cert", config.TLS.Cert, "")
-	flags.StringVar(&config.TLS.Key, "tls-key", config.TLS.Key, "")
+	flags.StringVar(&config.Fingerprint, "fingerprint", "", "")
+	flags.StringVar(&config.Auth, "auth", "", "")
+	flags.DurationVar(&config.KeepAlive, "keepalive", 25*time.Second, "")
+	flags.IntVar(&config.MaxRetryCount, "max-retry-count", -1, "")
+	flags.DurationVar(&config.MaxRetryInterval, "max-retry-interval", 0, "")
+	flags.StringVar(&config.Proxy, "proxy", "", "")
+	flags.StringVar(&config.TLS.CA, "tls-ca", "", "")
+	flags.BoolVar(&config.TLS.SkipVerify, "tls-skip-verify", false, "")
+	flags.StringVar(&config.TLS.Cert, "tls-cert", "", "")
+	flags.StringVar(&config.TLS.Key, "tls-key", "", "")
 	//flags.Var(&headerFlags{config.Headers}, "header", "")
 	hostname := flags.String("hostname", "", "")
 	sni := flags.String("sni", "", "")
 	pid := flags.Bool("pid", false, "")
-	verbose := flags.Bool("v", config.Verbose, "")
+	verbose := flags.Bool("v", false, "")
 	flags.Usage = func() {
 		fmt.Print(clientHelp)
 		os.Exit(0)
 	}
 	flags.Parse(args)
-	config, err := chclient.NewClientConfig(*profilePath)
+	config, err := chclient.NewClientConfig(*profilePath, config)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -451,7 +451,7 @@ func client(args []string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	c.Debug = *verbose
+	c.Debug = *verbose || config.Verbose
 	if *pid {
 		generatePidFile()
 	}

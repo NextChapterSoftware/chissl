@@ -50,8 +50,8 @@ verbose: true
 
 	configFile := createTempFile(t, sampleConfig)
 	defer os.Remove(configFile)
-
-	cfg, err := NewClientConfig(configFile)
+	cfg := &Config{Headers: http.Header{}}
+	cfg, err := NewClientConfig(configFile, cfg)
 	if err != nil {
 		t.Fatalf("Failed to load config: %v", err)
 	}
@@ -124,8 +124,8 @@ verbose: true
 
 	configFile := createTempFile(t, sampleConfig)
 	defer os.Remove(configFile)
-
-	cfg, err := NewClientConfig(configFile)
+	cfg := &Config{Headers: http.Header{}}
+	cfg, err := NewClientConfig(configFile, cfg)
 	if err != nil {
 		t.Fatalf("Failed to load config: %v", err)
 	}
@@ -141,14 +141,16 @@ verbose: true
 }
 
 func TestNewClientConfig_FileNotFound(t *testing.T) {
-	_, err := NewClientConfig("nonexistent.yaml")
+	cfg := &Config{Headers: http.Header{}}
+	_, err := NewClientConfig("nonexistent.yaml", cfg)
 	if err == nil {
 		t.Fatal("Expected error when loading nonexistent config file, got nil")
 	}
 }
 
 func TestNewClientConfig_DefaultValues(t *testing.T) {
-	_, err := NewClientConfig("")
+	cfg := &Config{Headers: http.Header{}}
+	_, err := NewClientConfig("", cfg)
 	if err != nil {
 		t.Fatalf("Failed to load default config: %v", err)
 	}
