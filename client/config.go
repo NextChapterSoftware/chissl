@@ -56,15 +56,14 @@ func fileExists(filePath string) bool {
 	return true
 }
 
-func NewClientConfig(profileConfigPath string) (*Config, error) {
-	cfg := Config{Headers: http.Header{}}
+func NewClientConfig(profileConfigPath string, cfg *Config) (*Config, error) {
 	filePath := parsePath(profileConfigPath)
 
 	if !fileExists(filePath) {
 		if profileConfigPath != "" {
 			return nil, errors.New("profile config file not found")
 		}
-		return &cfg, nil
+		return cfg, nil
 	}
 
 	data, err := os.ReadFile(filePath)
@@ -86,5 +85,5 @@ func NewClientConfig(profileConfigPath string) (*Config, error) {
 		cfg.KeepAlive = 25 * time.Second
 	}
 
-	return &cfg, nil
+	return cfg, nil
 }
