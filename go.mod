@@ -10,6 +10,7 @@ require (
 	github.com/jpillora/requestlog v1.0.0
 	github.com/jpillora/sizestr v1.0.0
 	golang.org/x/crypto v0.23.0
+	golang.org/x/exp v0.0.0-20240525044651-4c93da0ed11d
 	golang.org/x/net v0.25.0
 	golang.org/x/sync v0.7.0
 	gopkg.in/yaml.v3 v3.0.1

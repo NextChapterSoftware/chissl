@@ -44,7 +44,7 @@ lint: ## Lint the files
 	@go vet ${GOFILESNOTEST}
 
 test: ## Run unit tests
-	@go test -coverprofile=${DIR}/coverage.out -race -short ${GOFILESNOTEST}
+	@go test ./... -coverprofile=${DIR}/coverage.out -race -short ${GOFILESNOTEST}
 	@go tool cover -html=${DIR}/coverage.out -o ${DIR}/coverage.html
 	#@gocover-cobertura < ${DIR}/coverage.out > ${DIR}/coverage.xml
 

@@ -160,7 +160,7 @@ func (t *Tunnel) BindRemotes(ctx context.Context, remotes []*settings.Remote) er
 		if !t.IsClient {
 			tlsConf = t.TlsConf
 		}
-		p, err := NewProxy(t.Logger, t, t.proxyCount, remote, tlsConf)
+		p, err := NewProxy(t.Logger, t, t.proxyCount, remote, tlsConf, t.IsClient)
 		if err != nil {
 			return err
 		}

@@ -105,7 +105,7 @@ func L4Proto(s string) (head, proto string) {
 func (r Remote) String() string {
 	sb := strings.Builder{}
 	sb.WriteString(strings.TrimPrefix(r.Local(), "0.0.0.0:"))
-	sb.WriteString("=>")
+	sb.WriteString("->")
 	sb.WriteString(strings.TrimPrefix(r.Remote(), "127.0.0.1:"))
 	return sb.String()
 }
@@ -116,9 +116,7 @@ func (r Remote) Encode() string {
 }
 
 // Local is the decodable local portion
-func (r Remote) Local() string {
-	return r.LocalHost + ":" + r.LocalPort
-}
+func (r Remote) Local() string { return r.LocalHost + ":" + r.LocalPort }
 
 // Remote is the decodable remote portion
 func (r Remote) Remote() string {

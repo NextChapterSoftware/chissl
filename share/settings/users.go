@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"golang.org/x/exp/maps"
 	"os"
-	"regexp"
 	"sync"
 
 	"github.com/NextChapterSoftware/chissl/share/cio"
@@ -44,7 +44,7 @@ func (u *Users) Set(key string, user *User) {
 	u.Unlock()
 }
 
-// Del ete a users from the list
+// Del deletes a users from the list
 func (u *Users) Del(key string) {
 	u.Lock()
 	delete(u.inner, key)
@@ -127,33 +127,48 @@ func (u *UserIndex) loadUserIndex() error {
 	}
 	b, err := os.ReadFile(u.configFile)
 	if err != nil {
-		return fmt.Errorf("Failed to read auth file: %s, error: %s", u.configFile, err)
+		return fmt.Errorf("failed to read auth file: %s, error: %s", u.configFile, err)
 	}
-	var raw map[string][]string
-	if err := json.Unmarshal(b, &raw); err != nil {
+	var users []*User
+	if err := json.Unmarshal(b, &users); err != nil {
 		return errors.New("Invalid JSON: " + err.Error())
 	}
-	users := []*User{}
-	for auth, remotes := range raw {
-		user := &User{}
-		user.Name, user.Pass = ParseAuth(auth)
-		if user.Name == "" {
-			return errors.New("Invalid user:pass string")
+	for _, user := range users {
+		err := user.ValidateUser()
+		if err != nil {
+			return fmt.Errorf("invalid setting for user %s %v", user.Name, err)
 		}
-		for _, r := range remotes {
-			if r == "" || r == "*" {
-				user.Addrs = append(user.Addrs, UserAllowAll)
-			} else {
-				re, err := regexp.Compile(r)
-				if err != nil {
-					return errors.New("Invalid address regex")
-				}
-				user.Addrs = append(user.Addrs, re)
-			}
-		}
-		users = append(users, user)
 	}
 	//swap
 	u.Reset(users)
 	return nil
+}
+
+// WriteUsers writes the current users to the configuration file
+func (u *UserIndex) WriteUsers() error {
+	if u.configFile == "" {
+		return errors.New("configuration file not set")
+	}
+
+	data, err := json.MarshalIndent(maps.Values(u.inner), "", "  ")
+	if err != nil {
+		return fmt.Errorf("failed to serialize users: %s", err)
+	}
+
+	// Write the JSON data to the configuration file
+	if err := os.WriteFile(u.configFile, data, 0644); err != nil {
+		return fmt.Errorf("failed to write auth file: %s, error: %s", u.configFile, err)
+	}
+
+	return nil
+}
+
+func (u *UserIndex) ToJSON() (string, error) {
+
+	data, err := json.MarshalIndent(maps.Values(u.inner), "", "  ")
+	if err != nil {
+		return "", fmt.Errorf("failed to serialize users: %s", err)
+	}
+
+	return string(data), nil
 }
