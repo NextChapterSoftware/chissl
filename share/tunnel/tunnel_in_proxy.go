@@ -21,32 +21,40 @@ type sshTunnel interface {
 // Proxy is the inbound portion of a Tunnel
 type Proxy struct {
 	*cio.Logger
-	sshTun  sshTunnel
-	id      int
-	count   int
-	remote  *settings.Remote
-	dialer  net.Dialer
-	tcp     *net.TCPListener
-	https   net.Listener
-	tlsConf *tls.Config
-	mu      sync.Mutex
+	sshTun   sshTunnel
+	id       int
+	count    int
+	remote   *settings.Remote
+	dialer   net.Dialer
+	tcp      *net.TCPListener
+	https    net.Listener
+	tlsConf  *tls.Config
+	mu       sync.Mutex
+	isClient bool
 }
 
 // NewProxy creates a Proxy
-func NewProxy(logger *cio.Logger, sshTun sshTunnel, index int, remote *settings.Remote, tlsConf *tls.Config) (*Proxy, error) {
+func NewProxy(logger *cio.Logger, sshTun sshTunnel, index int, remote *settings.Remote, tlsConf *tls.Config, isClient bool) (*Proxy, error) {
 	id := index + 1
 	p := &Proxy{
-		Logger:  logger.Fork("proxy#%s", remote.String()),
-		sshTun:  sshTun,
-		id:      id,
-		remote:  remote,
-		tlsConf: tlsConf,
+		Logger:   logger.Fork("proxy#%s", remote.String()),
+		sshTun:   sshTun,
+		id:       id,
+		remote:   remote,
+		tlsConf:  tlsConf,
+		isClient: isClient,
 	}
 	return p, p.listen()
 }
 
 func (p *Proxy) listen() error {
-	addr, err := net.ResolveTCPAddr("tcp", p.remote.LocalHost+":"+p.remote.LocalPort)
+	remotePort := p.remote.LocalPort
+	// If the tunnel is on the client side, we don't care just grab any port!
+	// I spent 6 hours of my life on this which I will never get back!
+	if p.isClient && p.remote.Reverse {
+		remotePort = "0"
+	}
+	addr, err := net.ResolveTCPAddr("tcp", p.remote.LocalHost+":"+remotePort)
 	if err != nil {
 		return p.Errorf("resolve: %s", err)
 	}

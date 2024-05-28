@@ -28,21 +28,51 @@ func (s *Server) handleClientHandler(w http.ResponseWriter, r *http.Request) {
 		s.Infof("ignored client connection using protocol '%s', expected '%s'",
 			protocol, chshare.ProtocolVersion)
 	}
+
 	//proxy target was provided
 	if s.reverseProxy != nil {
 		s.reverseProxy.ServeHTTP(w, r)
 		return
 	}
+
 	//no proxy defined, provide access to health/version checks
-	switch r.URL.Path {
-	case "/health":
+	path := r.URL.Path
+	switch {
+	case strings.HasPrefix(path, "/health"):
 		w.Write([]byte("OK\n"))
 		return
-	case "/version":
+	case strings.HasPrefix(path, "/version"):
 		w.Write([]byte(chshare.BuildVersion))
 		return
+	case strings.HasPrefix(path, "/authfile"):
+		switch r.Method {
+		case http.MethodPost:
+			s.basicAuthMiddleware(s.handleAuthfile)(w, r) // Protecting with Basic Auth
+			return
+		}
+	case strings.HasPrefix(path, "/users"):
+		switch r.Method {
+		case http.MethodGet:
+			s.basicAuthMiddleware(s.handleGetUsers)(w, r) // Protecting with Basic Auth
+			return
+		}
+	case strings.HasPrefix(path, "/user"):
+		switch r.Method {
+		case http.MethodGet:
+			s.basicAuthMiddleware(s.handleGetUser)(w, r) // Protecting with Basic Auth
+			return
+		case http.MethodDelete:
+			s.basicAuthMiddleware(s.handleDeleteUser)(w, r) // Protecting with Basic Auth
+			return
+		case http.MethodPost:
+			s.basicAuthMiddleware(s.handleAddUser)(w, r) // Protecting with Basic Auth
+			return
+		case http.MethodPut:
+			s.basicAuthMiddleware(s.handleUpdateUser)(w, r) // Protecting with Basic Auth
+			return
+		}
 	}
-	//missing :O
+
 	w.WriteHeader(404)
 	w.Write([]byte("Not found"))
 }
@@ -109,6 +139,7 @@ func (s *Server) handleWebsocket(w http.ResponseWriter, req *http.Request) {
 		l.Infof("Client version (%s) differs from server version (%s)",
 			v, chshare.BuildVersion)
 	}
+
 	//validate remotes
 	for _, r := range c.Remotes {
 		//if user is provided, ensure they have

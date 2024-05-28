@@ -70,6 +70,7 @@ func NewServer(c *Config) (*Server, error) {
 	}
 	if c.Auth != "" {
 		u := &settings.User{Addrs: []*regexp.Regexp{settings.UserAllowAll}}
+		u.IsAdmin = true
 		u.Name, u.Pass = settings.ParseAuth(c.Auth)
 		if u.Name != "" {
 			server.users.AddUser(u)
