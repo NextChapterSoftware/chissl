@@ -56,9 +56,11 @@ changelog:
 brews:
   - name: chissl
     homepage: "https://github.com/NextChapterSoftware/chissl"
-    folder: Formula
+    directory: Formula
     description: "HTTPS reverse tunnel server/client"
     license: "MIT"
+    goarm: 6
+    goamd64: v1
     install: |
       bin.install "chissl"
     repository:
