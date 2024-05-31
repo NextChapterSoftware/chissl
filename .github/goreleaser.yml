@@ -39,7 +39,9 @@ archives:
 #    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
 #    files:
 #      - LICENSE
+
   - format: gz
+    id: chissl
     files:
       - none*
 universal_binaries:
@@ -61,6 +63,8 @@ brews:
     license: "MIT"
     goarm: 6
     goamd64: v1
+    ids:
+      - chissl
     install: |
       bin.install "chissl"
     repository:
