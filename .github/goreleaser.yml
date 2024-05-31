@@ -44,3 +44,28 @@ changelog:
     exclude:
       - "^docs:"
       - "^test:"
+brews:
+  - name: chissl
+    homepage: "https://github.com/NextChapterSoftware/chissl"
+    folder: Formula
+    description: "HTTPS reverse tunnel server/client"
+    license: "MIT"
+    install: |
+      bin.install "chissl_#{version}_darwin_arm64" => "chissl"
+    repository:
+      owner: NextChapterSoftware
+      name: chissl
+      branch: brew-releases/{{ .Version }}
+      token: "{{ .Env.GITHUB_TOKEN }}"
+      pull_request:
+        enabled: true
+        base:
+          owner: NextChapterSoftware
+          name: chissl
+          branch: main
+    url_template: "https://github.com/NextChapterSoftware/chissl/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    download_strategy: CurlDownloadStrategy
+    commit_author:
+      name: goreleaserbot
+      email: bot@goreleaser.com
+    commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
