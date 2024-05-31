@@ -32,13 +32,16 @@ builds:
       - hardfloat
       - softfloat
 archives:
-  - id: chissl
-    format: tar.gz
-    builds:
-      - chissl
-    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+#  - id: chissl
+#    format: tar.gz
+#    builds:
+#      - chissl
+#    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+#    files:
+#      - LICENSE
+  - format: gz
     files:
-      - LICENSE
+      - none*
 universal_binaries:
   - replace: true
 release:
