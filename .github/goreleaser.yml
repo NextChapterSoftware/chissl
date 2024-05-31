@@ -32,18 +32,17 @@ builds:
       - hardfloat
       - softfloat
 archives:
-#  - id: chissl
-#    format: tar.gz
-#    builds:
-#      - chissl
-#    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
-#    files:
-#      - LICENSE
-
   - format: gz
-    id: chissl
     files:
       - none*
+  - id: homebrew
+    name_template: >-
+      {{- .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end -}}
 universal_binaries:
   - replace: true
 release:
@@ -64,7 +63,7 @@ brews:
     goarm: 6
     goamd64: v1
     ids:
-      - chissl
+      - homebrew
     install: |
       bin.install "chissl"
     repository:
@@ -78,9 +77,9 @@ brews:
           owner: NextChapterSoftware
           name: chissl
           branch: main
-    #url_template: "https://github.com/NextChapterSoftware/chissl/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
-    download_strategy: CurlDownloadStrategy
+    url_template: "https://github.com/NextChapterSoftware/chissl/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    #download_strategy: CurlDownloadStrategy
     commit_author:
       name: goreleaserbot
       email: bot@goreleaser.com
-    commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Version }}"
+    commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Version }} tag {{ .Tag }}"
