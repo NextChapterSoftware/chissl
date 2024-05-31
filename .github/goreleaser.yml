@@ -32,9 +32,15 @@ builds:
       - hardfloat
       - softfloat
 archives:
-  - format: gz
+  - id: chissl
+    format: tar.gz
+    builds:
+      - chissl
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     files:
-      - none*
+      - LICENSE
+universal_binaries:
+  - replace: true
 release:
   draft: true
   prerelease: auto
@@ -51,7 +57,7 @@ brews:
     description: "HTTPS reverse tunnel server/client"
     license: "MIT"
     install: |
-      bin.install "chissl_#{version}_darwin_arm64" => "chissl"
+      bin.install "chissl"
     repository:
       owner: NextChapterSoftware
       name: chissl
@@ -63,9 +69,9 @@ brews:
           owner: NextChapterSoftware
           name: chissl
           branch: main
-    url_template: "https://github.com/NextChapterSoftware/chissl/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    #url_template: "https://github.com/NextChapterSoftware/chissl/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
     download_strategy: CurlDownloadStrategy
     commit_author:
       name: goreleaserbot
       email: bot@goreleaser.com
-    commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
+    commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Version }}"
