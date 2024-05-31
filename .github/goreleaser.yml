@@ -17,13 +17,6 @@ builds:
       - amd64
       - arm
       - arm64
-      - ppc64
-      - ppc64le
-      - mips
-      - mipsle
-      - mips64
-      - mips64le
-      - s390x
     goarm:
       - 5
       - 6
@@ -32,7 +25,7 @@ builds:
       - hardfloat
       - softfloat
 archives:
-  - format: gz
+  - format: binary
     files:
       - none*
   - id: homebrew
@@ -43,6 +36,7 @@ archives:
       {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end -}}
+    format: zip
 universal_binaries:
   - replace: true
 release:
@@ -62,8 +56,6 @@ brews:
     license: "MIT"
     goarm: 6
     goamd64: v1
-    ids:
-      - homebrew
     install: |
       bin.install "chissl"
     repository:
