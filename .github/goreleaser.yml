@@ -32,9 +32,13 @@ builds:
       - hardfloat
       - softfloat
 archives:
-  - format: gz
+  - id: chissl
+    format: tar.gz
+    builds:
+      - chissl
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     files:
-      - none*
+      - LICENSE
 universal_binaries:
   - replace: true
 release:
@@ -53,7 +57,7 @@ brews:
     description: "HTTPS reverse tunnel server/client"
     license: "MIT"
     install: |
-      bin.install "chissl_#{version}_darwin_arm64" => "chissl"
+      bin.install "chissl"
     repository:
       owner: NextChapterSoftware
       name: chissl
