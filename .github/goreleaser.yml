@@ -71,7 +71,7 @@ brews:
           owner: NextChapterSoftware
           name: chissl
           branch: main
-    url_template: "https://github.com/NextChapterSoftware/chissl/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    #url_template: "https://github.com/NextChapterSoftware/chissl/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
     #download_strategy: CurlDownloadStrategy
     commit_author:
       name: goreleaserbot
