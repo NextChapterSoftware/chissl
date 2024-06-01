@@ -5,23 +5,33 @@
 class Chissl < Formula
   desc "HTTPS reverse tunnel server/client"
   homepage "https://github.com/NextChapterSoftware/chissl"
-  version "1.2"
+  version "1.3"
   license "MIT"
 
   on_macos do
-    url "https://github.com/NextChapterSoftware/chissl/releases/download/v1.2/chissl_Darwin_all.zip"
-    sha256 "dea32d02ecfc0fad844b86bf36596f495f41f308ca2ada61861c44a4c6bfc1ad"
+    on_intel do
+      url "https://github.com/NextChapterSoftware/chissl/releases/download/v1.3/chissl_Darwin_x86_64.zip"
+      sha256 "6c25d7bc51b42b4a187775ffdef9df7518b21c06b37dcd36c696d599e95aced8"
 
-    def install
-      bin.install "chissl"
+      def install
+        bin.install "chissl"
+      end
+    end
+    on_arm do
+      url "https://github.com/NextChapterSoftware/chissl/releases/download/v1.3/chissl_Darwin_arm64.zip"
+      sha256 "1e8b04bfd7e22f4680e48365a83ebfcbf00a460d107dc50fcdd9a4f052aee280"
+
+      def install
+        bin.install "chissl"
+      end
     end
   end
 
   on_linux do
     on_intel do
       if Hardware::CPU.is_64_bit?
-        url "https://github.com/NextChapterSoftware/chissl/releases/download/v1.2/chissl_Linux_x86_64.zip"
-        sha256 "feae7e4eec1a3192c6ebc2d58f9b6972f86a79578ae04ef4160b14fd0c0ef950"
+        url "https://github.com/NextChapterSoftware/chissl/releases/download/v1.3/chissl_Linux_x86_64.zip"
+        sha256 "84939aca765a881c735122cdf8dc9840a15c8e6aad38ef3d4805a6407d202b2b"
 
         def install
           bin.install "chissl"
@@ -30,8 +40,8 @@ class Chissl < Formula
     end
     on_arm do
       if !Hardware::CPU.is_64_bit?
-        url "https://github.com/NextChapterSoftware/chissl/releases/download/v1.2/chissl_Linux_armv6.zip"
-        sha256 "f596ce667d951ce6cb3e45a780871a59b26809fcadcced15e08f43c6330685e8"
+        url "https://github.com/NextChapterSoftware/chissl/releases/download/v1.3/chissl_Linux_armv6.zip"
+        sha256 "c488d56986920f4b709ed1804a2325460f18465c935e96f46212b0fca4684656"
 
         def install
           bin.install "chissl"
@@ -40,8 +50,8 @@ class Chissl < Formula
     end
     on_arm do
       if Hardware::CPU.is_64_bit?
-        url "https://github.com/NextChapterSoftware/chissl/releases/download/v1.2/chissl_Linux_arm64.zip"
-        sha256 "577f90272ad7cfad15f6e9ea8e679bad8921223ef2b6bd0f815bea6464f72d3a"
+        url "https://github.com/NextChapterSoftware/chissl/releases/download/v1.3/chissl_Linux_arm64.zip"
+        sha256 "3beb191bae55cde46b5c8771073a10e751715f0af8418236f3adbe2a9349ec15"
 
         def install
           bin.install "chissl"
