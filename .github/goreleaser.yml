@@ -57,7 +57,7 @@ brews:
     goarm: 6
     goamd64: v1
     ids:
-      homebrew
+      - homebrew
     install: |
       bin.install "chissl"
     repository:
