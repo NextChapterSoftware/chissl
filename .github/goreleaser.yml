@@ -37,8 +37,8 @@ archives:
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end -}}
     format: zip
-universal_binaries:
-  - replace: true
+#universal_binaries:
+#  - replace: true
 release:
   draft: true
   prerelease: auto
