@@ -18,15 +18,38 @@ chiSSL is essentially a light version of [Chisel](https://github.com/jpillora/ch
 
 ## Requirements:
 
-- A server with a public IP address
+- Linux server with a public IP address
 - Fully qualified domain name!
 
 ## Installation
 
-- Binaries for all supported platforms can be downloaded from Releases page.
-- Homebrew (Coming soon!)
-- EC2 user-data installation script
+### Homebrew
 
+```bash
+brew tap nextchaptersoftware/chissl https://github.com/NextChapterSoftware/chissl
+brew install chissl
+```
+
+
+### Linux Installer (Server only)
+
+```bash
+# <domain_name> must be set to your server's fqdn 
+# [port] is optional and will default to 443
+# bash <(curl -s https://raw.githubusercontent.com/NextChapterSoftware/chissl/v1.1/server_installer.sh) <domain_name> [port]
+# e.g 
+bash <(curl -s https://raw.githubusercontent.com/NextChapterSoftware/chissl/v1.1/server_installer.sh) your.domain.com
+```
+
+### Manual
+Binaries for all supported platforms can be downloaded from [Releases](https://github.com/NextChapterSoftware/chissl/releases) page.
+
+```bash
+# sudo curl -L -o /usr/local/bin/chissl https://github.com/NextChapterSoftware/chissl/releases/download/v{VERSION}/chissl_{VERSION}_{OS}_{ARCH}
+# e.g 
+sudo curl -L -o  https://github.com/NextChapterSoftware/chissl/releases/download/v1.1/chissl_1.1_linux_amd64
+sudo chmod +x /usr/local/bin/chissl
+```
 
 <h2 id="example-usage">
 Examples 
