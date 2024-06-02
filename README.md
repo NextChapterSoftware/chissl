@@ -36,9 +36,9 @@ brew install chissl
 ```bash
 # <domain_name> must be set to your server's fqdn 
 # [port] is optional and will default to 443
-# bash <(curl -s https://raw.githubusercontent.com/NextChapterSoftware/chissl/v1.1/server_installer.sh) <domain_name> [port]
+# bash <(curl -s https://raw.githubusercontent.com/NextChapterSoftware/chissl/main/server_installer.sh) <domain_name> [port]
 # e.g 
-bash <(curl -s https://raw.githubusercontent.com/NextChapterSoftware/chissl/v1.1/server_installer.sh) your.domain.com
+bash <(curl -s https://raw.githubusercontent.com/NextChapterSoftware/chissl/main/server_installer.sh) your.domain.com
 ```
 
 ### Manual
