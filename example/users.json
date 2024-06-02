@@ -1,0 +1,25 @@
+[
+	{
+		"username": "root",
+		"password": "toor",
+		"addresses": ["*"],
+		"is_admin": true
+	},
+	{
+		"username": "foo",
+		"password": "bar",
+		"addresses": [
+			"^9001",
+			"^9002",
+			"^9003"
+		],
+		"is_admin": false
+	},
+	{
+		"username": "ping",
+		"password": "pong",
+		"addresses": ["^80[0-9]{2}"],
+		"is_admin": false
+	}
+]
+

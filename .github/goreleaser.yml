@@ -1,0 +1,79 @@
+# test this goreleaser config with:
+# - cd chisel
+# - goreleaser --skip-publish --rm-dist --config .github/goreleaser.yml
+builds:
+  - env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w -X github.com/NextChapterSoftware/chissl/share.BuildVersion={{.Version}}
+    flags:
+      - -trimpath
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 5
+      - 6
+      - 7
+    gomips:
+      - hardfloat
+      - softfloat
+archives:
+  - format: binary
+    files:
+      - none*
+  - id: homebrew
+    name_template: >-
+      {{- .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end -}}
+    format: zip
+universal_binaries:
+  - replace: true
+release:
+  draft: true
+  prerelease: auto
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+brews:
+  - name: chissl
+    homepage: "https://github.com/NextChapterSoftware/chissl"
+    directory: Formula
+    description: "HTTPS reverse tunnel server/client"
+    license: "MIT"
+    goarm: 6
+    goamd64: v1
+    ids:
+      - homebrew
+    install: |
+      bin.install "chissl"
+    repository:
+      owner: NextChapterSoftware
+      name: chissl
+      branch: brew-releases/{{ .Version }}
+      token: "{{ .Env.GITHUB_TOKEN }}"
+      pull_request:
+        enabled: true
+        base:
+          owner: NextChapterSoftware
+          name: chissl
+          branch: main
+    #url_template: "https://github.com/NextChapterSoftware/chissl/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    #download_strategy: CurlDownloadStrategy
+    commit_author:
+      name: goreleaserbot
+      email: bot@goreleaser.com
+    commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Version }} tag {{ .Tag }}"
