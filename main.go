@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	chadmin "github.com/NextChapterSoftware/chissl/admin"
 	"log"
 	"net/http"
 	"os"
@@ -27,6 +28,7 @@ var help = `
   Commands:
     server - runs chissl in server mode
     client - runs chissl in client mode
+	admin  - runs local admin client for user management
 
   Read more:
     https://github.com/NextChapterSoftware/chissl
@@ -60,6 +62,8 @@ func main() {
 		server(args)
 	case "client":
 		client(args)
+	case "admin":
+		admin(args)
 	default:
 		fmt.Print(help)
 		os.Exit(0)
@@ -462,5 +466,77 @@ func client(args []string) {
 	}
 	if err := c.Wait(); err != nil {
 		log.Fatal(err)
+	}
+}
+
+var adminHelp = `
+  Usage: chissl admin [subcommand] [options]
+
+  Subcommands:
+    adduser - Adds a new user
+    deluser - Deletes an existing user
+	getuser - Gets info about an existing user
+    listusers - Lists all users
+
+  Read more:
+    https://github.com/NextChapterSoftware/chissl
+
+`
+
+func admin(args []string) {
+	if len(args) == 0 {
+		fmt.Print(adminHelp)
+		os.Exit(0)
+	}
+
+	flags := flag.NewFlagSet("admin", flag.ContinueOnError)
+	profilePath := flags.String("profile", "", "Path to profile yaml file")
+
+	flags.Usage = func() {
+		fmt.Print(adminHelp)
+		os.Exit(1)
+	}
+
+	// Parse the flags for the main command
+	err := flags.Parse(args)
+	if err != nil {
+		log.Fatal("Error parsing main command flags:", err)
+
+	}
+
+	config := &chadmin.Config{}
+	config, err = chadmin.NewClientConfig(*profilePath, config)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	a, err := chadmin.NewAdminClient(config)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if len(args) < 1 && config.Server == "" {
+		log.Fatalln("No command line arguments or profile yaml provided")
+	}
+
+	// Pull out used args
+	args = flags.Args()
+
+	// Determine the subcommand
+	subcommand := args[0]
+	subcommandArgs := args[1:]
+
+	switch subcommand {
+	case "adduser":
+		a.AddUser(subcommandArgs)
+	case "deluser":
+		a.DelUser(subcommandArgs)
+	case "getuser":
+		a.GerUser(subcommandArgs)
+	case "listusers":
+		a.ListUsers(subcommandArgs)
+	default:
+		fmt.Print(adminHelp)
+		os.Exit(0)
 	}
 }

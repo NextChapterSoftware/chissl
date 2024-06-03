@@ -52,7 +52,7 @@ func (u *User) ValidateUser() error {
 
 	// Validate Addrs: each address must have a minimum length of 1
 	if len(u.Addrs) == 0 {
-		return errors.New(" at least one address must be provided")
+		return errors.New("at least one address must be provided")
 	}
 	for _, r := range u.Addrs {
 		if len(r.String()) == 0 {

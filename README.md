@@ -13,6 +13,8 @@ chiSSL is essentially a light version of [Chisel](https://github.com/jpillora/ch
 - [Payload inspection](#payload-inspection) for connections 
 - Multiple concurrent HTTPS reverse tunnels 
 - Client configuration using [yaml file](#client-usage)
+- User management CLI (beta)
+- User management REST API (beta)
 
 ![chissl Reverse HTTPS Tunnel](./assets/chissl.png)
 
@@ -332,9 +334,15 @@ Usage: chissl client [options] <server> <remote> [remote] [remote] ...
     enabled (mutual-TLS)
 ```
 
+### Admin CLI (beta)
+Admin CLI docs can be found [here](./docs/admin_cli.md.md)
+
+### User management REST API (beta)
+User management REST API docs can be found [here](./docs/rest_api.md) 
+
 ## Roadmap 
 
+- Used hashed/obfuscated passwords in server config file  
 - Modernise CLI implementation 
-- Add user CRUD operations using the client to edit auth.json remotely
 - Improve verbose logging method 
-- Fix the ability to set default headers 
+- Fix the ability to set/forward default headers 

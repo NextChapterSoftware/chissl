@@ -2,12 +2,12 @@
 	{
 		"username": "root",
 		"password": "toor",
-		"addresses": ["*"],
+		"addresses": [".*"],
 		"is_admin": true
 	},
 	{
 		"username": "foo",
-		"password": "bar",
+		"password": "bar12345",
 		"addresses": [
 			"^9001",
 			"^9002",
@@ -17,7 +17,7 @@
 	},
 	{
 		"username": "ping",
-		"password": "pong",
+		"password": "pong1234",
 		"addresses": ["^80[0-9]{2}"],
 		"is_admin": false
 	}
