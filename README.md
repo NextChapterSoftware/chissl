@@ -49,7 +49,7 @@ Binaries for all supported platforms can be downloaded from [Releases](https://g
 ```bash
 # sudo curl -L -o /usr/local/bin/chissl https://github.com/NextChapterSoftware/chissl/releases/download/v{VERSION}/chissl_{VERSION}_{OS}_{ARCH}
 # e.g 
-sudo curl -L -o  https://github.com/NextChapterSoftware/chissl/releases/download/v1.1/chissl_1.1_linux_amd64
+sudo curl -L -o /usr/local/bin/chissl https://github.com/NextChapterSoftware/chissl/releases/download/v1.2/chissl_1.2_linux_amd64
 sudo chmod +x /usr/local/bin/chissl
 ```
 

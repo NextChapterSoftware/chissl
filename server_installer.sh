@@ -21,7 +21,7 @@
 #   bash <(curl -s https://raw.githubusercontent.com/NextChapterSoftware/chissl/v1.1/server_installer.sh) <domain_name> [port]
 
 # Target chiSSL version
-LATEST_VERSION="1.1"
+LATEST_VERSION="1.2"
 
 # Function to display usage
 usage() {
