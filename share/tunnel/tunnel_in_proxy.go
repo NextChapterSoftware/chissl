@@ -104,6 +104,7 @@ func (p *Proxy) runTCP(ctx context.Context) error {
 }
 
 func (p *Proxy) runHTTPS(ctx context.Context) error {
+	p.tlsConf.NextProtos = []string{"http/1.1"}
 	p.https = tls.NewListener(p.tcp, p.tlsConf)
 	p.Infof("Done setting up certs and listener https listener on %s", p.tcp.Addr().String())
 
